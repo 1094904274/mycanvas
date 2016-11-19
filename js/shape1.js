@@ -1,5 +1,6 @@
-function shape(canvas,cobj){
+function shape(canvas,copy,cobj){
     this.canvas=canvas;
+    this.copy=copy;
     this.cobj=cobj;
     this.width=this.canvas.width;
     this.height=this.canvas.height;
@@ -11,6 +12,7 @@ function shape(canvas,cobj){
     this.linew=1;
     this.bianNum=5;
     this.jiaoNum=5;
+    this.isback=true;
 }
 shape.prototype={
     init:function(){
@@ -20,10 +22,11 @@ shape.prototype={
     },
     draw:function(){
         var that=this;
-        this.canvas.onmousedown=function(e){
+        this.copy.onmousedown=function(e){
             var startx= e.offsetX;
             var starty= e.offsetY;
-            that.canvas.onmousemove=function(e){
+            that.copy.onmousemove=function(e){
+                that.isback=true;
                 that.init();
                 var endx= e.offsetX;
                 var endy= e.offsetY;
@@ -35,9 +38,9 @@ shape.prototype={
 
             }
 
-            that.canvas.onmouseup=function(){
-                that.canvas.onmouseup=null;
-                that.canvas.onmousemove=null;
+            that.copy.onmouseup=function(){
+                that.copy.onmouseup=null;
+                that.copy.onmousemove=null;
                 that.historys.push(that.cobj.getImageData(0,0,that.width,that.height));
             }
         }
@@ -87,8 +90,33 @@ shape.prototype={
         this.cobj.closePath();
         this.cobj[this.style]();
     },
-    pen:{
+    pen:function(){
+        var that=this;
+        this.copy.onmousedown=function(e){
+            var startx= e.offsetX;
+            var starty= e.offsetY;
+            that.cobj.beginPath();
+            that.cobj.moveTo(startx,starty);
+            that.copy.onmousemove=function(e){
+                that.init();
+                var endx= e.offsetX;
+                var endy= e.offsetY;
+                that.cobj.clearRect(0,0,that.width,that.height);
+                if(that.historys.length>0){
+                    that.cobj.putImageData(that.historys[that.historys.length-1],0,0);
+                }
+                that.cobj.lineTo(endx,endy);
+                that.cobj.stroke();
 
+            }
+
+            that.copy.onmouseup=function(){
+                that.copy.onmouseup=null;
+                that.copy.onmousemove=null;
+                that.historys.push(that.cobj.getImageData(0,0,that.width,that.height));
+            }
+        }
     }
+
 
 }
