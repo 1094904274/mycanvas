@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <style>
+        body{
+            padding:0;margin:0;
+        }
+        canvas{
+            background: #eee;
+        }
+    </style>
+    <script src="js/shape.js"></script>
+    <script>
+        window.onload=function(){
+          var canvas=document.querySelector("canvas");
+          var cobj=canvas.getContext("2d");
+          var obj=new shape(canvas,cobj);
+          obj.type="jiao";
+          obj.fill="red";
+          obj.jiaoNum=10;
+          obj.draw();
+
+          /*多边形*/
+
+
+
+
+
+
+        }
+    </script>
+</head>
+<body>
+<canvas width="600" height="600">
+
+</canvas>
+</body>
+</html>
